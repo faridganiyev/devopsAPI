@@ -1,4 +1,5 @@
 using DevopsAPI.Factory;
+using DevopsAPI.Models;
 using DevopsAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<GenerateOptions>(builder.Configuration.GetSection("GenerateOptions"));
 builder.Services.AddSingleton<ICommand, Command>();
 builder.Services.AddScoped<ITerminal, Docker>();
 builder.Services.AddScoped<ITerminal, Portainer>();
