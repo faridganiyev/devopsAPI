@@ -5,6 +5,6 @@
         public int Score { get; set; }
         public int IsCompleted { get; set; }
         public virtual AppUser User { get; set; }
-        public virtual Quiz Quiz { get; set; }
+        public virtual QuizTicket QuizTicket { get; set; }
     }
 }

@@ -5,6 +5,7 @@
         public QuizTicket()
         {
             Quizzes = new HashSet<Quiz>();
+            QuizResults = new HashSet<QuizResult>();
         }
         public int Time { get; set; }
         public string No { get; set; }
@@ -12,6 +13,7 @@
 
         public virtual Category Category { get; set; }
         public virtual ICollection<Quiz> Quizzes { get; set; }
+        public virtual ICollection<QuizResult> QuizResults { get; set; }
     }
 
     public enum QuizLevel

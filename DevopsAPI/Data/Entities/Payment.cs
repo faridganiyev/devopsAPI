@@ -6,6 +6,7 @@
         public string Method { get; set; }
         public string Note { get; set; }
 
+        public virtual AppUser User { get; set; }
         public virtual Membership Membership { get; set; }
     }
 }

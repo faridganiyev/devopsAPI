@@ -1,6 +1,6 @@
 ﻿namespace DevopsAPI.Data.Entities
 {
-    public class UserInfo
+    public class UserInfo : BaseEntity
     {
         public string Name { get; set; }
         public string Surname { get; set; }
