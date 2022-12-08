@@ -30,10 +30,12 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(cr=>cr.Challange)
-                .WithMany(c=>c.Results);
+                .WithMany(c=>c.Results)
+                .HasForeignKey(f => f.ChallangeId);
 
             builder.HasOne(cr => cr.User)
-                .WithMany(u => u.ChallangeResults);
+                .WithMany(u => u.ChallangeResults)
+                .HasForeignKey(f=>f.UserId);
         }
     }
 }

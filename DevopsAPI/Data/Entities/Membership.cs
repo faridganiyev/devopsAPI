@@ -7,6 +7,7 @@
             Payments = new HashSet<Payment>();
         }
         public string UserId { get; set; }
+        public int PricingId { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly DueDate { get; set; }
         public virtual AppUser User { get; set; }

@@ -30,10 +30,12 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(qr=>qr.QuizTicket)
-                .WithMany(t=>t.QuizResults);
+                .WithMany(t=>t.QuizResults)
+                .HasForeignKey(f=>f.TicketId);
 
             builder.HasOne(qr => qr.User)
-                .WithMany(u => u.QuizResults);
+                .WithMany(u => u.QuizResults)
+                .HasForeignKey(f=>f.UserId);
         }
     }
 }

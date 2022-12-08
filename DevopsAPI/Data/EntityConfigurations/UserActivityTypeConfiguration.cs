@@ -27,7 +27,8 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(ua => ua.User)
-                .WithOne(u => u.Activity);
+                .WithOne(u => u.Activity)
+                .HasForeignKey<UserActivity>(f=>f.UserId);
         }
     }
 }

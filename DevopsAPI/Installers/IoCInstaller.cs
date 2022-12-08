@@ -1,6 +1,8 @@
-﻿using DevopsAPI.Factory;
+﻿using DevopsAPI.Data;
+using DevopsAPI.Factory;
 using DevopsAPI.Models;
 using DevopsAPI.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevopsAPI.Installers
 {
@@ -8,6 +10,7 @@ namespace DevopsAPI.Installers
     {
         public static void AddIoC(WebApplicationBuilder builder)
         {
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("ConnStr")));
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

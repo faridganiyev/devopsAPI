@@ -6,6 +6,8 @@
         {
             TaskResults = new HashSet<TaskResult>();
         }
+        public string UserId { get; set; }
+        public int ChallangeId { get; set; }
         public int Score { get; set; }
         public int IsCompleted { get; set; }
         public virtual AppUser User { get; set; }

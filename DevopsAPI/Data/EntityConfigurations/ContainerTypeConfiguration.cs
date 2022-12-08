@@ -11,6 +11,9 @@ namespace DevopsAPI.Data.EntityConfigurations
         {
             builder.ToTable("container");
 
+            builder.HasIndex(x => x.Name)
+                .IsUnique();
+
             builder.Property(x => x.Id)
                 .UseIdentityAlwaysColumn();
 

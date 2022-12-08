@@ -42,7 +42,8 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(ui => ui.User)
-                .WithOne(u => u.Details);
+                .WithOne(u => u.Details)
+                .HasForeignKey<UserInfo>(f => f.UserId); ;
         }
     }
 }

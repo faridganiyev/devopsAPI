@@ -31,10 +31,12 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(m => m.User)
-                .WithOne(u => u.Membership);
+                .WithOne(u => u.Membership)
+                .HasForeignKey<Membership>(f=>f.UserId);
 
             builder.HasOne(m => m.Pricing)
-                .WithMany(p => p.Memberships);
+                .WithMany(p => p.Memberships)
+                .HasForeignKey(f=>f.PricingId);
         }
     }
 }

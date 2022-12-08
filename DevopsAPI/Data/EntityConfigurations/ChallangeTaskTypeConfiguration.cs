@@ -27,7 +27,8 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(ct=>ct.Challange)
-                .WithMany(c=>c.Tasks);
+                .WithMany(c=>c.Tasks)
+                .HasForeignKey(f=>f.ChallangeId);
         }
     }
 }

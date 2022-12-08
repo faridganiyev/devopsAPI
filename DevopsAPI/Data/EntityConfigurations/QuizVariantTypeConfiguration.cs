@@ -27,7 +27,8 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(qv=>qv.Quiz)
-                .WithMany(q=>q.Variants);
+                .WithMany(q=>q.Variants)
+                .HasForeignKey(f=>f.QuizId);
         }
     }
 }

@@ -10,6 +10,9 @@ namespace DevopsAPI.Data.EntityConfigurations
         {
             builder.ToTable("quiz_ticket");
 
+            builder.HasIndex(x=>x.No)
+                .IsUnique();
+
             builder.Property(x => x.Id)
                 .UseIdentityAlwaysColumn();
 
@@ -34,7 +37,8 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(qt => qt.Category)
-                .WithMany(c=>c.QuizTickets);
+                .WithMany(c=>c.QuizTickets)
+                .HasForeignKey(f=>f.CategoryId);
         }
     }
 }

@@ -7,6 +7,7 @@
             Quizzes = new HashSet<Quiz>();
             QuizResults = new HashSet<QuizResult>();
         }
+        public int CategoryId { get; set; }
         public int Time { get; set; }
         public string No { get; set; }
         public QuizLevel Level { get; set; }

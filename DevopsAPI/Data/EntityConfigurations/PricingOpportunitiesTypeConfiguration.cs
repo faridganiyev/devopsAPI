@@ -8,7 +8,7 @@ namespace DevopsAPI.Data.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<PricingOpportunities> builder)
         {
-            builder.ToTable("pricing");
+            builder.ToTable("pricing_opportunities");
 
             builder.Property(x => x.Id)
                 .UseIdentityAlwaysColumn();
@@ -31,7 +31,8 @@ namespace DevopsAPI.Data.EntityConfigurations
                 .HasDefaultValue(null);
 
             builder.HasOne(po => po.Pricing)
-                .WithMany(p => p.Opportunities);
+                .WithMany(p => p.Opportunities)
+                .HasForeignKey(f=>f.PricingId);
         }
     }
 }

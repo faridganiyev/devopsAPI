@@ -10,6 +10,9 @@ namespace DevopsAPI.Data.EntityConfigurations
         {
             builder.ToTable("pricing");
 
+            builder.HasIndex(x=>x.Title)
+                .IsUnique();
+
             builder.Property(x => x.Id)
                 .UseIdentityAlwaysColumn();
 
