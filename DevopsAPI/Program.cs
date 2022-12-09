@@ -1,4 +1,3 @@
-using DevopsAPI.Factory;
 using DevopsAPI.Installers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,22 +20,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-
-//endpoints
-app.MapGet("run-docker", async (ITerminalFactory terminalFactory) =>
-{
-    var docker = terminalFactory.Create("docker");
-    var result = await docker.CreateTerminal();
-    return Results.Ok(result);
-});
-
-app.MapGet("run-portainer", async (ITerminalFactory terminalFactory) =>
-{
-    var portainer = terminalFactory.Create("portainer");
-    var result = await portainer.CreateTerminal();
-    return Results.Ok(result);
-});
-
 
 app.Run();

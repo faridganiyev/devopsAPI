@@ -11,9 +11,9 @@ namespace DevopsAPI.Data.EntityConfigurations
         {
             builder.ToTable("user");
 
-            var userSeeding = new AppUserSeeding();
+            //var userSeeding = new AppUserSeeding();
 
-            builder.HasData(userSeeding.AppUsers);
+            //builder.HasData(userSeeding.AppUsers);
         }
     }
 }

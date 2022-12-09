@@ -1,4 +1,5 @@
 ﻿using DevopsAPI.Data.Entities;
+using DevopsAPI.Data.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -39,6 +40,9 @@ namespace DevopsAPI.Data.EntityConfigurations
 
             builder.Property(x => x.ModifiedDate)
                 .HasDefaultValue(null);
+
+            var pricingSeeder = new PricingSeeder();
+            builder.HasData(pricingSeeder.Pricings);
         }
     }
 }

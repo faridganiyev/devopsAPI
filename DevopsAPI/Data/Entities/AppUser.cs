@@ -11,7 +11,7 @@ namespace DevopsAPI.Data.Entities
             Payments = new HashSet<Payment>();
         }
         public DateOnly CreatedDate { get; set; }
-        public DateOnly ModifiedDate { get; set; }
+        public DateOnly? ModifiedDate { get; set; }
         public virtual UserInfo Details { get; set; }
         public virtual UserActivity Activity { get; set; }
         public virtual Membership Membership { get; set; }

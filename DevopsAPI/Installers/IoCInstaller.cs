@@ -1,7 +1,8 @@
 ﻿using DevopsAPI.Data;
 using DevopsAPI.Factory;
 using DevopsAPI.Models;
-using DevopsAPI.Services;
+using DevopsAPI.Services.Implementations;
+using DevopsAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DevopsAPI.Installers
@@ -15,10 +16,8 @@ namespace DevopsAPI.Installers
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<GenerateOptions>(builder.Configuration.GetSection("GenerateOptions"));
-            builder.Services.AddSingleton<ICommand, Command>();
-            builder.Services.AddScoped<ITerminal, Docker>();
-            builder.Services.AddScoped<ITerminal, Portainer>();
-            builder.Services.AddScoped<ITerminalFactory, TerminalFactory>();
+            builder.Services.AddScoped<IRunner, Runner>();
+            builder.Services.AddScoped<IRunnerFactory, RunnerFactory>();
         }
     }
 }

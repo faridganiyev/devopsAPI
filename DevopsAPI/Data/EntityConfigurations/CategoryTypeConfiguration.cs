@@ -1,4 +1,5 @@
 ﻿using DevopsAPI.Data.Entities;
+using DevopsAPI.Data.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -28,6 +29,9 @@ namespace DevopsAPI.Data.EntityConfigurations
 
             builder.Property(x => x.ModifiedDate)
                 .HasDefaultValue(null);
+
+            var categorySeeder = new CategorySeeder();
+            builder.HasData(categorySeeder.Categories);
         }
     }
 }
