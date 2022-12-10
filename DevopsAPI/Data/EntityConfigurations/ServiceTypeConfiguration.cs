@@ -4,21 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DevopsAPI.Data.EntityConfigurations
 {
-    public class UserActivityTypeConfiguration : IEntityTypeConfiguration<UserActivity>
+    public class ServiceTypeConfiguration : IEntityTypeConfiguration<Service>
     {
-        public void Configure(EntityTypeBuilder<UserActivity> builder)
+        public void Configure(EntityTypeBuilder<Service> builder)
         {
-            builder.ToTable("user_activity");
+            builder.ToTable("service");
 
             builder.Property(x => x.Id)
                 .UseIdentityAlwaysColumn();
 
-            builder.Property(x => x.Title)
-                .IsRequired()
-                .HasMaxLength(200);
-            builder.Property(x => x.UseFor)
-                .IsRequired()
-                .HasMaxLength(200);
+            builder.Property(x => x.Name)
+                .IsRequired();
+
+            builder.Property(x => x.Script)
+                .IsRequired();
 
             builder.Property(x => x.IsDeleted)
                 .HasDefaultValue(false);
@@ -29,9 +28,6 @@ namespace DevopsAPI.Data.EntityConfigurations
             builder.Property(x => x.ModifiedDate)
                 .HasDefaultValue(null);
 
-            builder.HasOne(ua => ua.User)
-                .WithOne(u => u.Activity)
-                .HasForeignKey<UserActivity>(f=>f.UserId);
         }
     }
 }

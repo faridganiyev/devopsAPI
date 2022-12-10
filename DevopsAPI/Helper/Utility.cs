@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using DevopsAPI.Models.Base;
+using System.Text;
 
 namespace DevopsAPI.Helper
 {
@@ -22,7 +23,7 @@ namespace DevopsAPI.Helper
             var port = rand.Next(8001, 65535);
 
             StaticStore.Create();
-            return !StaticStore.Add(new Models.NamePort(name, port))
+            return !StaticStore.Add(new NamePort(name, port))
                 ? GenerateNameAndPort(characters)
                 : (name, port);
         }

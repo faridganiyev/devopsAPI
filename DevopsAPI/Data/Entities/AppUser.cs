@@ -10,6 +10,7 @@ namespace DevopsAPI.Data.Entities
             QuizResults = new HashSet<QuizResult>();
             Payments = new HashSet<Payment>();
         }
+        public bool IsActive { get; set; }
         public DateOnly CreatedDate { get; set; }
         public DateOnly? ModifiedDate { get; set; }
         public virtual UserInfo Details { get; set; }

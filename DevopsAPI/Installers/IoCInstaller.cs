@@ -1,6 +1,6 @@
 ﻿using DevopsAPI.Data;
 using DevopsAPI.Factory;
-using DevopsAPI.Models;
+using DevopsAPI.Models.Base;
 using DevopsAPI.Services.Implementations;
 using DevopsAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +16,7 @@ namespace DevopsAPI.Installers
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<GenerateOptions>(builder.Configuration.GetSection("GenerateOptions"));
+            builder.Services.Configure<MailOptions>(builder.Configuration.GetSection("MailOptions"));
             builder.Services.AddScoped<IRunner, Runner>();
             builder.Services.AddScoped<IRunnerFactory, RunnerFactory>();
         }

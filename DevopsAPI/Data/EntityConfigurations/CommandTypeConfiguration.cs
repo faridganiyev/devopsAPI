@@ -4,21 +4,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DevopsAPI.Data.EntityConfigurations
 {
-    public class UserActivityTypeConfiguration : IEntityTypeConfiguration<UserActivity>
+    public class CommandTypeConfiguration : IEntityTypeConfiguration<Command>
     {
-        public void Configure(EntityTypeBuilder<UserActivity> builder)
+        public void Configure(EntityTypeBuilder<Command> builder)
         {
-            builder.ToTable("user_activity");
+            builder.ToTable("command");
 
             builder.Property(x => x.Id)
                 .UseIdentityAlwaysColumn();
 
-            builder.Property(x => x.Title)
-                .IsRequired()
-                .HasMaxLength(200);
-            builder.Property(x => x.UseFor)
-                .IsRequired()
-                .HasMaxLength(200);
+            builder.Property(x => x.CommandText)
+                .IsRequired();
 
             builder.Property(x => x.IsDeleted)
                 .HasDefaultValue(false);
@@ -29,9 +25,9 @@ namespace DevopsAPI.Data.EntityConfigurations
             builder.Property(x => x.ModifiedDate)
                 .HasDefaultValue(null);
 
-            builder.HasOne(ua => ua.User)
-                .WithOne(u => u.Activity)
-                .HasForeignKey<UserActivity>(f=>f.UserId);
+            builder.HasOne(cmd => cmd.Container)
+                .WithMany(c => c.Commands)
+                .HasForeignKey(c => c.Id);
         }
     }
 }

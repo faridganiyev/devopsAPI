@@ -1,4 +1,4 @@
-﻿namespace DevopsAPI.Models
+﻿namespace DevopsAPI.Models.Base
 {
     public enum ContainerType
     {

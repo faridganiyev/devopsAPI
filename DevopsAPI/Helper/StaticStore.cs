@@ -1,4 +1,4 @@
-﻿using DevopsAPI.Models;
+﻿using DevopsAPI.Models.Base;
 
 namespace DevopsAPI.Helper
 {

@@ -1,5 +1,5 @@
 ﻿using DevopsAPI.Helper;
-using DevopsAPI.Models;
+using DevopsAPI.Models.Base;
 using DevopsAPI.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;

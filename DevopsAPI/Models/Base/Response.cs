@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-namespace DevopsAPI.Models
+namespace DevopsAPI.Models.Base
 {
-    public class Response
+    public struct Response
     {
         /// <summary>
         /// Result of request
@@ -17,18 +17,12 @@ namespace DevopsAPI.Models
         /// <summary>
         /// Dynamic data of response
         /// </summary>
-        public dynamic? Data { get; set; }
+        public dynamic? Data { get; set; } = null;
 
         /// <summary>
         /// Message
         /// </summary>
-        public dynamic? Message { get; set; }
-
-
-        public Response()
-        {
-
-        }
+        public dynamic? Message { get; set; } = null;
 
 
         /// <summary>
@@ -41,6 +35,16 @@ namespace DevopsAPI.Models
             StatusCode = HttpStatusCode.OK;
         }
 
+        /// <summary>
+        /// Response initializer for the case where the everything is ok with data
+        /// </summary>
+        /// <param name="data"></param>
+        public Response(dynamic data)
+        {
+            StatusCode = HttpStatusCode.OK;
+            IsSuccess = true;
+            Data = data;
+        }
 
         /// <summary>
         /// Response initializer for the case where the everything is ok but data is optional.
@@ -58,7 +62,7 @@ namespace DevopsAPI.Models
         /// Response initializer for the case where the status code is bad request and message is required.
         /// </summary>
         /// <param name="message"></param>
-        public Response(dynamic message)
+        public Response(string message)
         {
             StatusCode = HttpStatusCode.BadRequest;
             IsSuccess=false;

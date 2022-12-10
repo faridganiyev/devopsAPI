@@ -1,5 +1,6 @@
 ﻿using DevopsAPI.Data.Entities;
 using DevopsAPI.Models;
+using DevopsAPI.Models.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
