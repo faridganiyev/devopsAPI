@@ -5,6 +5,7 @@ using DevopsAPI.Models.Dto.Request;
 using DevopsAPI.Models.Others;
 using DevopsAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 namespace DevopsAPI.Services.Implementations
 {
@@ -14,16 +15,19 @@ namespace DevopsAPI.Services.Implementations
         private readonly IToken _token;
         private readonly IMailer _mailer;
         private readonly IMembership _membership;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public AccountService(UserManager<AppUser> userManager,
                               IToken token,
                               IMailer mailer,
-                              IMembership membership)
+                              IMembership membership,
+                              IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _token = token;
             _mailer = mailer;
             _membership = membership;
+            _contextAccessor = contextAccessor;
         }
 
         public async Task<Response> ChangePasswordAsync(string userId, ChangePasswordDto dto)
@@ -37,7 +41,7 @@ namespace DevopsAPI.Services.Implementations
 
         public async Task<Response> CreateAsync(RegisterDto dto)
         {
-            var newUser = new AppUser
+            var user = new AppUser
             {
                 Email = dto.Email,
                 UserName = dto.Email,
@@ -59,23 +63,48 @@ namespace DevopsAPI.Services.Implementations
                     DueDate = DateOnly.FromDateTime(DateTime.Now.AddYears(1)),
                 }
             };
-            var identityResult = await _userManager.CreateAsync(newUser, dto.Password);
+            var identityResult = await _userManager.CreateAsync(user, dto.Password);
             if (!identityResult.Succeeded)
                 throw new Exception("An error occured");
 
-            _mailer.SendAsHtml(newUser.Email, new MailUIContent
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var request = _contextAccessor?.HttpContext?.Request;
+            _mailer.SendAsHtml(user.Email, new MailUIContent
             {
                 title = "Email Confirmation",
                 description = "Click button to confirm email",
                 buttonTitle = "Confirm",
-                link = "",
+                link = $"{request?.Scheme}://{request?.Host}/api/v1/account/verify-email?id={user.Id}&verificationToken={token}",
                 copyright = "Dind.io"
             }, MailTemplate.email_confirmation);
             return new Response(HttpStatusCode.Created, new
             {
-                newUser.Id,
-                newUser.CreatedDate
+                user.Id,
+                user.CreatedDate
             });
+        }
+
+        public async Task<Response> LoginAsync(LoginDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user is null)
+                return new Response("user not found");
+            var isValid = await _userManager.CheckPasswordAsync(user, dto.Password);
+            if (!isValid)
+            {
+                _ = await _userManager.AccessFailedAsync(user);
+                return new Response("password is not valid");
+            }
+
+            var membership = await _membership.GetUserMembershipAsync(user.Id) ?? "Free";
+
+            var token = _token.CreateToken(user, membership);
+            return new Response(data: token);
+        }
+
+        public Task<Response> GetByIdAsync(string id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Response> ReactivateAsync(string userId) => new Response(await _userManager.ReactivateAsync(userId));
@@ -90,24 +119,6 @@ namespace DevopsAPI.Services.Implementations
                     : new Response((await _userManager.DeleteAsync(user)).Succeeded);
         }
         
-        public async Task<Response> LoginAsync(LoginDto dto)
-        {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
-            if (user is null)
-                return new Response("user not found");
-            var isValid = await _userManager.CheckPasswordAsync(user, dto.Password);
-            if(!isValid)
-            {
-                _ = await _userManager.AccessFailedAsync(user);
-                return new Response("password is not valid");
-            }
-
-            var membership = await _membership.GetUserMembershipAsync(user.Id) ?? "Free";
-
-            var token = _token.CreateToken(user, membership);
-            return new Response(data: token);
-        }
-
         public Task<Response> UpdateAsync()
         {
             throw new NotImplementedException();
@@ -118,7 +129,19 @@ namespace DevopsAPI.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<Response> VerifyEmailAsync()
+        public async Task<Response> VerifyEmailAsync(string id, string verificationToken)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user is null)
+                return new Response("User not found.");
+            if (user.EmailConfirmed)
+                return new Response("The user has already verified his email.");
+            return (await _userManager.ConfirmEmailAsync(user, verificationToken)).Succeeded
+                ? new Response(true)
+                : new Response("An error occured.");
+        }
+
+        public async Task<Response> UpdatePictureAsync(string id, IFormFile photo)
         {
             throw new NotImplementedException();
         }

@@ -15,8 +15,14 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.11" />
     <PackageReference Include="Mustachio" Version="2.1.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
+  </ItemGroup> 
+
+  <ItemGroup>
+    <Folder Include="wwwroot\photos\profile_picture_thumnails\" />
+    <Folder Include="wwwroot\photos\profile_picture\" />
   </ItemGroup>
 
 </Project>
