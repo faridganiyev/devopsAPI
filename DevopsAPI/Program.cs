@@ -2,23 +2,15 @@ using DevopsAPI.Installers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-IoCInstaller.AddIoC(builder);
+// Add services
+builder.Services.ContainerInstaller(builder.Configuration);
+builder.Services.IdentityInstaller(builder.Configuration);
+builder.Services.CorsInstaller();
+builder.Services.SwaggerInstaller();
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+app.UseMiddlewares();
 
 app.Run();

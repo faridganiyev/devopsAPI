@@ -2,6 +2,7 @@
 using DevopsAPI.Data.Repository;
 using DevopsAPI.Models.Base;
 using DevopsAPI.Models.Dto.Request;
+using DevopsAPI.Models.Dto.Response;
 using DevopsAPI.Models.Others;
 using DevopsAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -102,9 +103,33 @@ namespace DevopsAPI.Services.Implementations
             return new Response(data: token);
         }
 
-        public Task<Response> GetByIdAsync(string id)
+        public async Task<Response> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.GetByIdAsync(id);
+            if (user is null)
+                return new Response("User not found.");
+            return new Response(new UserResponseDto
+            {
+                Id = id,
+                Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
+                CreatedDate = user.CreatedDate,
+                IsActive = user.IsActive,
+                Details = new UserDetailsResponseDto
+                {
+                    Name = user.Details.Name,
+                    Surname = user.Details.Surname,
+                    BirthDate = user.Details.BirthDate,
+                    Gender = user.Details.Gender,
+                    Address = user.Details.Address,
+                    Picture = user.Details.Picture
+                },
+                Activity = new UserActivityResponseDto
+                {
+                    Title = user.Activity.Title,
+                    UseFor = user.Activity.UseFor
+                }
+            });
         }
 
         public async Task<Response> ReactivateAsync(string userId) => new Response(await _userManager.ReactivateAsync(userId));
@@ -118,16 +143,6 @@ namespace DevopsAPI.Services.Implementations
                     ? new Response("User not found")
                     : new Response((await _userManager.DeleteAsync(user)).Succeeded);
         }
-        
-        public Task<Response> UpdateAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Response> UpdatePictureAsync()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<Response> VerifyEmailAsync(string id, string verificationToken)
         {
@@ -139,6 +154,11 @@ namespace DevopsAPI.Services.Implementations
             return (await _userManager.ConfirmEmailAsync(user, verificationToken)).Succeeded
                 ? new Response(true)
                 : new Response("An error occured.");
+        }
+
+        public async Task<Response> UpdateAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Response> UpdatePictureAsync(string id, IFormFile photo)

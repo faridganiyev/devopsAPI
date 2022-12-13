@@ -41,8 +41,8 @@ namespace DevopsAPI.Data.EntityConfigurations
             builder.Property(x => x.ModifiedDate)
                 .HasDefaultValue(null);
 
-            var pricingSeeder = new PricingSeeder();
-            builder.HasData(pricingSeeder.Pricings);
+            //var pricingSeeder = new PricingSeeder();
+            //builder.HasData(pricingSeeder.Pricings);
         }
     }
 }
