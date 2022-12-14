@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 WORKDIR /src
 COPY ["DevopsAPI.csproj", "DevopsAPI/"]
-RUN dotnet restore "DevopsAPI/DevopsAPI.csproj"
+RUN dotnet restore "DevopsAPI/DevopsAPI/DevopsAPI.csproj"
 COPY . .
 WORKDIR "/src/DevopsAPI"
 RUN dotnet build "DevopsAPI.csproj" -c Release -o /app/build
