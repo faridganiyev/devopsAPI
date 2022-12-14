@@ -1,22 +1,17 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
+ARG BUILDCONFIG=RELEASE
+ARG VERSION=1.0.0
+COPY DevopsAPI.csproj /build/
+RUN dotnet restore ./build/DevopsAPI.csproj
+COPY . ./build/
+WORKDIR /build/
+RUN dotnet publish ./DevopsAPI.csproj -c ${BUILDCONFIG} -o out /p:Version=${VERSION}
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["DevopsAPI/DevopsAPI.csproj", "DevopsAPI/"]
-RUN dotnet restore "DevopsAPI/DevopsAPI.csproj"
-COPY . .
-WORKDIR "/src/DevopsAPI"
-RUN dotnet build "DevopsAPI.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "DevopsAPI.csproj" -c Release -o /app/publish
-
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /build/out .
+RUN apk add --no-cache tzdata
+RUN ln -s /usr/share/zoneinfo/Asia/Baku /etc/localtime
 ENTRYPOINT ["dotnet", "DevopsAPI.dll"]
